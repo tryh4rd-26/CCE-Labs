@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="Student Profile"
+        app:titleTextColor="@android:color/white" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Basic Information (TableLayout)"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="1"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:padding="8dp">
+                <TableRow>
+                    <TextView android:text="Name: " android:textStyle="bold" />
+                    <TextView android:id="@+id/tvDetailName" android:text="N/A" />
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="Reg No: " android:textStyle="bold" />
+                    <TextView android:id="@+id/tvDetailRegNo" android:text="N/A" />
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="Dept: " android:textStyle="bold" />
+                    <TextView android:id="@+id/tvDetailDept" android:text="N/A" />
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skills (ListView)"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp" />
+
+            <ListView
+                android:id="@+id/lvDetailSkills"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@android:drawable/dialog_holo_light_frame" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preferences (GridView)"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp" />
+
+            <GridView
+                android:id="@+id/gvDetailPrefs"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:numColumns="2"
+                android:verticalSpacing="4dp"
+                android:horizontalSpacing="4dp"
+                android:background="@android:drawable/dialog_holo_light_frame" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact &amp; Other Details"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp" />
+
+            <TextView android:id="@+id/tvDetailFull"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:text="Loading details..." />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

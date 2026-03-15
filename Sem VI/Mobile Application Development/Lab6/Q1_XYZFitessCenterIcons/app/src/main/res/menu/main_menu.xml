@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Requirement a -->
+    <item
+        android:id="@+id/workout_plans"
+        android:title="Workout Plans" />
+    <item
+        android:id="@+id/trainers"
+        android:title="Trainers" />
+    <item
+        android:id="@+id/membership"
+        android:title="Membership" />
+
+    <!-- Requirement b -->
+    <item
+        android:id="@+id/homepage"
+        android:icon="@android:drawable/ic_menu_today"
+        android:title="Homepage"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/about_us"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="About Us"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/contact_us"
+        android:icon="@android:drawable/ic_menu_call"
+        android:title="Contact Us"
+        app:showAsAction="always" />
+
+</menu>

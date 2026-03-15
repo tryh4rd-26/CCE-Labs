@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Campus Clubs (ListView)"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <ListView
+        android:id="@+id/lvClubs"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#F0F0F0"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Facilities (GridView)"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <GridView
+        android:id="@+id/gvFacilities"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:numColumns="3"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Timetable (TableLayout)"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <TableLayout
+        android:id="@+id/tableTimetable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:background="#000000"
+        android:padding="1dp">
+
+        <TableRow android:background="#FFFFFF" android:padding="5dp">
+            <TextView android:text="Day" android:textStyle="bold"/>
+            <TextView android:text="Course" android:textStyle="bold"/>
+            <TextView android:text="Room" android:textStyle="bold"/>
+        </TableRow>
+        <TableRow android:background="#FFFFFF" android:padding="5dp">
+            <TextView android:text="Monday"/>
+            <TextView android:text="MAD"/>
+            <TextView android:text="AB5"/>
+        </TableRow>
+        <TableRow android:background="#FFFFFF" android:padding="5dp">
+            <TextView android:text="Tuesday"/>
+            <TextView android:text="OS"/>
+            <TextView android:text="AB3"/>
+        </TableRow>
+        <TableRow android:background="#FFFFFF" android:padding="5dp">
+            <TextView android:text="Wednesday"/>
+            <TextView android:text="CN"/>
+            <TextView android:text="AB4"/>
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/btnToBooking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go to Booking &amp; Settings"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>

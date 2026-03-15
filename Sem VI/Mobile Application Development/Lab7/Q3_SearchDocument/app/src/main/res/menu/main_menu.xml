@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_filter"
+        android:title="Filter"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/submenu_search"
+                android:title="Search Keywords" />
+            <item
+                android:id="@+id/submenu_highlight"
+                android:title="Highlight" />
+            <item
+                android:id="@+id/submenu_sort"
+                android:title="Sort">
+                <menu>
+                    <item
+                        android:id="@+id/sort_alphabetical"
+                        android:title="Alphabetically" />
+                    <item
+                        android:id="@+id/sort_relevance"
+                        android:title="By Relevance" />
+                </menu>
+            </item>
+        </menu>
+    </item>
+</menu>

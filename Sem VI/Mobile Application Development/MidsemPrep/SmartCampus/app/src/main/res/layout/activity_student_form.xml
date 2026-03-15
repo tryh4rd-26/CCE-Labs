@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:titleTextColor="@android:color/white" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Student Information Form"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <EditText android:id="@+id/etName" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Name" />
+            <EditText android:id="@+id/etRegNo" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Registration Number" />
+            <EditText android:id="@+id/etPhone" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Phone" android:inputType="phone" />
+            <EditText android:id="@+id/etEmail" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Email" android:inputType="textEmailAddress" />
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gender" android:layout_marginTop="8dp" />
+            <RadioGroup android:id="@+id/rgGender" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <RadioButton android:id="@+id/rbMale" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Male" />
+                <RadioButton android:id="@+id/rbFemale" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Female" />
+                <RadioButton android:id="@+id/rbOther" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Other" />
+            </RadioGroup>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Skills" android:layout_marginTop="8dp" />
+            <CheckBox android:id="@+id/cbJava" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Java" />
+            <CheckBox android:id="@+id/cbPython" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Python" />
+            <CheckBox android:id="@+id/cbWeb" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Web Development" />
+            <CheckBox android:id="@+id/cbML" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Machine Learning" />
+            <CheckBox android:id="@+id/cbAndroid" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Android" />
+
+            <Switch android:id="@+id/swHostel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Hostel Resident" android:layout_marginTop="8dp" />
+            <ToggleButton android:id="@+id/tbScholarship" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textOn="Scholarship: ON" android:textOff="Scholarship: OFF" android:layout_marginTop="8dp" />
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Department" android:layout_marginTop="8dp" />
+            <Spinner android:id="@+id/spDepartment" android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+            <Button android:id="@+id/btnShowDatePicker" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Select Date of Birth" android:layout_marginTop="8dp" />
+            <TextView android:id="@+id/tvSelectedDOB" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DOB: Not Selected" />
+
+            <Button android:id="@+id/btnShowTimePicker" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Select Preferred Lab Time" android:layout_marginTop="8dp" />
+            <TextView android:id="@+id/tvSelectedTime" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lab Time: Not Selected" />
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Change Text Size" android:layout_marginTop="8dp" />
+            <SeekBar android:id="@+id/sbTextSize" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="30" android:progress="14" />
+
+            <ImageView android:id="@+id/ivProfile" android:layout_width="100dp" android:layout_height="100dp" android:src="@android:drawable/ic_menu_gallery" android:layout_gravity="center" android:layout_marginTop="8dp" />
+            <ZoomButton android:id="@+id/zbZoom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@android:drawable/btn_plus" android:layout_gravity="center" />
+
+            <Button android:id="@+id/btnSubmitForm" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Submit Details" android:layout_marginTop="16dp" />
+            <Button android:id="@+id/btnResetForm" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Reset Form" />
+            <Button android:id="@+id/btnViewStudents" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="View Students" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

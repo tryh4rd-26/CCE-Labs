@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dashboard_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvDashboardTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Campus Dashboard"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"/>
+
+        <ToggleButton
+            android:id="@+id/toggleAlerts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="Alerts ON"
+            android:textOff="Alerts OFF"
+            android:layout_marginBottom="10dp"/>
+
+        <Switch
+            android:id="@+id/switchWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WiFi"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adjust Background Brightness/Color:"/>
+        <SeekBar
+            android:id="@+id/seekBarColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Map Zoom: "/>
+            <ZoomButton
+                android:id="@+id/zoomIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/btn_plus"/>
+            <ZoomButton
+                android:id="@+id/zoomOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/btn_minus"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Transport Mode:"/>
+        <RadioGroup
+            android:id="@+id/rgTransport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+            <RadioButton android:id="@+id/rbBus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bus"/>
+            <RadioButton android:id="@+id/rbBicycle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bicycle"/>
+            <RadioButton android:id="@+id/rbWalk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Walk"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Campus Services:"/>
+        <CheckBox android:id="@+id/cbLibrary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Library"/>
+        <CheckBox android:id="@+id/cbGym" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gym"/>
+        <CheckBox android:id="@+id/cbCafeteria" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cafeteria"/>
+
+        <Button
+            android:id="@+id/btnNextPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go to Campus Info"
+            android:layout_marginTop="20dp"/>
+
+    </LinearLayout>
+</ScrollView>
