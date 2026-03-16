@@ -22,39 +22,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupToolbar();
+        initViews();
+        setupListeners();
+    }
+
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.login_title);
+        }
+    }
 
+    private void initViews() {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnRegisterUser = findViewById(R.id.btnRegisterUser);
+    }
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = etUsername.getText().toString();
-                String password = etPassword.getText().toString();
-
-                if (username.equals("admin") && password.equals("admin")) {
-                    Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Login Successful for user: " + username);
-                    Intent intent = new Intent(MainActivity.this, StudentFormActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(MainActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Login Failed for user: " + username);
-                }
-            }
+    private void setupListeners() {
+        btnLogin.setOnClickListener(v -> handleLogin());
+        btnRegisterUser.setOnClickListener(v -> {
+            Log.d(TAG, "Navigating to RegistrationActivity");
+            startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
         });
+    }
 
-        btnRegisterUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Navigating to RegistrationActivity");
-                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-                startActivity(intent);
-            }
-        });
+    private void handleLogin() {
+        String username = etUsername.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        String[] creds = getResources().getStringArray(R.array.login_credentials);
+        String validUser = creds[0];
+        String validPass = creds[1];
+
+        if (username.equals(validUser) && password.equals(validPass)) {
+            Toast.makeText(this, R.string.toast_login_success, Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Login Successful: " + username);
+            startActivity(new Intent(this, StudentFormActivity.class));
+        } else {
+            Toast.makeText(this, R.string.toast_login_failed, Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Login Failed: " + username);
+        }
     }
 }

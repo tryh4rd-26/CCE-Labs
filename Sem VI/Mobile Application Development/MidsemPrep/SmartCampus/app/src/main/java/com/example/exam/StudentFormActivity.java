@@ -20,9 +20,12 @@ import java.util.List;
 
 public class StudentFormActivity extends AppCompatActivity {
 
-    private EditText etName, etRegNo, etPhone, etEmail;
+    private EditText etField1, etField2, etField3, etField4;
     private RadioGroup rgGender;
-    private CheckBox cbJava, cbPython, cbWeb, cbML, cbAndroid;
+    private LinearLayout llCheckBoxes, llMarksContainer;
+    private List<CheckBox> dynamicCheckBoxes = new ArrayList<>();
+    private List<EditText> dynamicMarksFields = new ArrayList<>();
+    
     private Switch swHostel;
     private ToggleButton tbScholarship;
     private Spinner spDepartment;
@@ -41,19 +44,23 @@ public class StudentFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_form);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        initViews();
+        setupDynamicFields();
+        setupToolbar();
+        setupSpinner();
+        checkEditMode();
+        setupListeners();
+    }
 
-        etName = findViewById(R.id.etName);
-        etRegNo = findViewById(R.id.etRegNo);
-        etPhone = findViewById(R.id.etPhone);
-        etEmail = findViewById(R.id.etEmail);
+    private void initViews() {
+        etField1 = findViewById(R.id.etField1);
+        etField2 = findViewById(R.id.etField2);
+        etField3 = findViewById(R.id.etField3);
+        etField4 = findViewById(R.id.etField4);
         rgGender = findViewById(R.id.rgGender);
-        cbJava = findViewById(R.id.cbJava);
-        cbPython = findViewById(R.id.cbPython);
-        cbWeb = findViewById(R.id.cbWeb);
-        cbML = findViewById(R.id.cbML);
-        cbAndroid = findViewById(R.id.cbAndroid);
+        llCheckBoxes = findViewById(R.id.llCheckBoxes);
+        llMarksContainer = findViewById(R.id.llMarksContainer);
+
         swHostel = findViewById(R.id.swHostel);
         tbScholarship = findViewById(R.id.tbScholarship);
         spDepartment = findViewById(R.id.spDepartment);
@@ -68,150 +75,188 @@ public class StudentFormActivity extends AppCompatActivity {
         ivProfile = findViewById(R.id.ivProfile);
         zbZoom = findViewById(R.id.zbZoom);
 
-        // Spinner setup
-        String[] depts = {"CCE", "IT", "CS", "AI", "Data Science"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, depts);
-        spDepartment.setAdapter(adapter);
+        // Modular labels from strings.xml
+        etField1.setHint(getString(R.string.label_field1));
+        etField2.setHint(getString(R.string.label_field2));
+        etField3.setHint(getString(R.string.label_field3));
+        etField4.setHint(getString(R.string.label_field4));
+        ((TextView)findViewById(R.id.tvRadioLabel)).setText(getString(R.string.label_radio));
+        ((TextView)findViewById(R.id.tvCheckLabel)).setText(getString(R.string.label_check));
+        swHostel.setText(getString(R.string.label_switch));
+        ((TextView)findViewById(R.id.tvSpinnerLabel)).setText(getString(R.string.label_spinner));
+    }
 
-        // Check for edit mode
-        editIndex = getIntent().getIntExtra("EDIT_INDEX", -1);
-        if (editIndex != -1) {
-            if (getSupportActionBar() != null) getSupportActionBar().setTitle("Edit Student");
-            btnSubmitForm.setText("Update Details");
-            prefillForm(editIndex);
-        } else {
-            if (getSupportActionBar() != null) getSupportActionBar().setTitle("Add New Student");
+    private void setupDynamicFields() {
+        // Dynamic Checkboxes
+        String[] skills = getResources().getStringArray(R.array.skills_array);
+        for (String skill : skills) {
+            CheckBox cb = new CheckBox(this);
+            cb.setText(skill);
+            llCheckBoxes.addView(cb);
+            dynamicCheckBoxes.add(cb);
         }
 
-        // Date Picker
-        btnShowDatePicker.setOnClickListener(v -> {
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
+        // Dynamic Marks/Price Fields
+        String[] assessments = getResources().getStringArray(R.array.assessments_array);
+        for (String item : assessments) {
+            EditText et = new EditText(this);
+            et.setHint("Enter score for: " + item);
+            et.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            llMarksContainer.addView(et);
+            dynamicMarksFields.add(et);
+        }
+    }
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year1, monthOfYear, dayOfMonth) -> {
-                selectedDOB = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year1;
-                tvSelectedDOB.setText("DOB: " + selectedDOB);
-            }, year, month, day);
-            datePickerDialog.show();
-        });
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
 
-        // Time Picker
-        btnShowTimePicker.setOnClickListener(v -> {
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
+    private void setupSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.departments, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spDepartment.setAdapter(adapter);
+    }
 
-            TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute1) -> {
-                selectedTime = hourOfDay + ":" + minute1;
-                tvSelectedTime.setText("Lab Time: " + selectedTime);
-            }, hour, minute, true);
-            timePickerDialog.show();
-        });
+    private void checkEditMode() {
+        editIndex = getIntent().getIntExtra("EDIT_INDEX", -1);
+        if (editIndex != -1) {
+            if (getSupportActionBar() != null) getSupportActionBar().setTitle(R.string.form_title_edit);
+            btnSubmitForm.setText(R.string.update_details_btn);
+            prefillForm(editIndex);
+        } else {
+            if (getSupportActionBar() != null) getSupportActionBar().setTitle(R.string.form_title_add);
+        }
+    }
 
-        // SeekBar
+    private void setupListeners() {
+        btnShowDatePicker.setOnClickListener(v -> showDatePicker());
+        btnShowTimePicker.setOnClickListener(v -> showTimePicker());
+        
         sbTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvSelectedDOB.setTextSize(progress + 10);
-                tvSelectedTime.setTextSize(progress + 10);
+                float size = progress + 10;
+                tvSelectedDOB.setTextSize(size);
+                tvSelectedTime.setTextSize(size);
             }
             @Override public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        // ZoomButton
         zbZoom.setOnClickListener(v -> {
             ivProfile.setScaleX(ivProfile.getScaleX() + 0.1f);
             ivProfile.setScaleY(ivProfile.getScaleY() + 0.1f);
         });
 
-        // Submit Form
-        btnSubmitForm.setOnClickListener(v -> {
-            String name = etName.getText().toString();
-            String regNo = etRegNo.getText().toString();
-            
-            if(name.isEmpty() || regNo.isEmpty()){
-                Toast.makeText(this, "Please enter Name and Reg No", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            int genderId = rgGender.getCheckedRadioButtonId();
-            String gender = genderId == -1 ? "N/A" : ((RadioButton) findViewById(genderId)).getText().toString();
-
-            List<String> skills = new ArrayList<>();
-            if (cbJava.isChecked()) skills.add("Java");
-            if (cbPython.isChecked()) skills.add("Python");
-            if (cbWeb.isChecked()) skills.add("Web Development");
-            if (cbML.isChecked()) skills.add("Machine Learning");
-            if (cbAndroid.isChecked()) skills.add("Android");
-
-            Student student = new Student(name, regNo, etPhone.getText().toString(), etEmail.getText().toString(), 
-                gender, skills, swHostel.isChecked(), tbScholarship.isChecked(), 
-                spDepartment.getSelectedItem().toString(), selectedDOB, selectedTime);
-            
-            if (editIndex != -1) {
-                DataManager.studentList.set(editIndex, student);
-                Toast.makeText(this, "Student Updated Successfully", Toast.LENGTH_SHORT).show();
-            } else {
-                DataManager.studentList.add(student);
-                Toast.makeText(this, "Student Registered Successfully", Toast.LENGTH_SHORT).show();
-            }
-
-            navigateToView();
-        });
-
+        btnSubmitForm.setOnClickListener(v -> handleSubmit());
         btnResetForm.setOnClickListener(v -> resetForm());
         btnViewStudents.setOnClickListener(v -> navigateToView());
     }
 
+    private void showDatePicker() {
+        final Calendar c = Calendar.getInstance();
+        new DatePickerDialog(this, (view, year, month, day) -> {
+            selectedDOB = day + "-" + (month + 1) + "-" + year;
+            tvSelectedDOB.setText("Date: " + selectedDOB);
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    private void showTimePicker() {
+        final Calendar c = Calendar.getInstance();
+        new TimePickerDialog(this, (view, hour, minute) -> {
+            selectedTime = hour + ":" + minute;
+            tvSelectedTime.setText("Time: " + selectedTime);
+        }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true).show();
+    }
+
+    private void handleSubmit() {
+        String f1 = etField1.getText().toString().trim();
+        String f2 = etField2.getText().toString().trim();
+        
+        if(f1.isEmpty() || f2.isEmpty()){
+            Toast.makeText(this, R.string.error_missing_fields, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int genderId = rgGender.getCheckedRadioButtonId();
+        String radioVal = genderId == -1 ? "N/A" : ((RadioButton) findViewById(genderId)).getText().toString();
+
+        List<String> selectedOptions = new ArrayList<>();
+        for (CheckBox cb : dynamicCheckBoxes) {
+            if (cb.isChecked()) selectedOptions.add(cb.getText().toString());
+        }
+
+        List<Double> marks = new ArrayList<>();
+        for (EditText et : dynamicMarksFields) {
+            String val = et.getText().toString();
+            marks.add(val.isEmpty() ? 0.0 : Double.parseDouble(val));
+        }
+
+        Student student = new Student(f1, f2, etField3.getText().toString(), etField4.getText().toString(), 
+            radioVal, selectedOptions, swHostel.isChecked(), tbScholarship.isChecked(), 
+            spDepartment.getSelectedItem().toString(), selectedDOB, selectedTime, marks);
+        
+        if (editIndex != -1) {
+            DataManager.studentList.set(editIndex, student);
+            Toast.makeText(this, R.string.toast_updated, Toast.LENGTH_SHORT).show();
+        } else {
+            DataManager.studentList.add(student);
+            Toast.makeText(this, R.string.toast_registered, Toast.LENGTH_SHORT).show();
+        }
+        navigateToView();
+    }
+
     private void prefillForm(int index) {
         Student s = DataManager.studentList.get(index);
-        etName.setText(s.getName());
-        etRegNo.setText(s.getRegNo());
-        etPhone.setText(s.getPhone());
-        etEmail.setText(s.getEmail());
+        etField1.setText(s.getName());
+        etField2.setText(s.getRegNo());
+        etField3.setText(s.getPhone());
+        etField4.setText(s.getEmail());
         
-        if (s.getGender().equals("Male")) rgGender.check(R.id.rbMale);
-        else if (s.getGender().equals("Female")) rgGender.check(R.id.rbFemale);
-        else if (s.getGender().equals("Other")) rgGender.check(R.id.rbOther);
+        for (int i = 0; i < rgGender.getChildCount(); i++) {
+            RadioButton rb = (RadioButton) rgGender.getChildAt(i);
+            if (rb.getText().toString().equals(s.getGender())) rb.setChecked(true);
+        }
 
-        List<String> skills = s.getSkills();
-        cbJava.setChecked(skills.contains("Java"));
-        cbPython.setChecked(skills.contains("Python"));
-        cbWeb.setChecked(skills.contains("Web Development"));
-        cbML.setChecked(skills.contains("Machine Learning"));
-        cbAndroid.setChecked(skills.contains("Android"));
+        for (CheckBox cb : dynamicCheckBoxes) {
+            cb.setChecked(s.getSkills().contains(cb.getText().toString()));
+        }
+
+        for (int i = 0; i < dynamicMarksFields.size(); i++) {
+            if (i < s.getMarks().size()) {
+                dynamicMarksFields.get(i).setText(String.valueOf(s.getMarks().get(i)));
+            }
+        }
 
         swHostel.setChecked(s.isHostelResident());
         tbScholarship.setChecked(s.isScholarshipEligible());
 
-        ArrayAdapter<String> adapter = (ArrayAdapter<String>) spDepartment.getAdapter();
-        int pos = adapter.getPosition(s.getDepartment());
-        spDepartment.setSelection(pos);
+        ArrayAdapter adapter = (ArrayAdapter) spDepartment.getAdapter();
+        spDepartment.setSelection(adapter.getPosition(s.getDepartment()));
 
         selectedDOB = s.getDob();
-        tvSelectedDOB.setText("DOB: " + selectedDOB);
+        tvSelectedDOB.setText("Date: " + selectedDOB);
         selectedTime = s.getPreferredLabTime();
-        tvSelectedTime.setText("Lab Time: " + selectedTime);
+        tvSelectedTime.setText("Time: " + selectedTime);
     }
 
     private void resetForm() {
         editIndex = -1;
-        if (getSupportActionBar() != null) getSupportActionBar().setTitle("Add New Student");
-        btnSubmitForm.setText("Submit Details");
-        etName.setText(""); etRegNo.setText(""); etPhone.setText(""); etEmail.setText("");
+        if (getSupportActionBar() != null) getSupportActionBar().setTitle(R.string.form_title_add);
+        btnSubmitForm.setText(R.string.submit_details_btn);
+        etField1.setText(""); etField2.setText(""); etField3.setText(""); etField4.setText("");
         rgGender.clearCheck();
-        cbJava.setChecked(false); cbPython.setChecked(false); cbWeb.setChecked(false); cbML.setChecked(false); cbAndroid.setChecked(false);
+        for (CheckBox cb : dynamicCheckBoxes) cb.setChecked(false);
+        for (EditText et : dynamicMarksFields) et.setText("");
         swHostel.setChecked(false); tbScholarship.setChecked(false);
         selectedDOB = ""; selectedTime = "";
-        tvSelectedDOB.setText("DOB: Not Selected"); tvSelectedTime.setText("Lab Time: Not Selected");
+        tvSelectedDOB.setText(R.string.dob_default); tvSelectedTime.setText(R.string.lab_time_default);
     }
 
     private void navigateToView() {
-        Intent intent = new Intent(this, StudentListActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, StudentListActivity.class));
         finish();
     }
 
@@ -230,21 +275,10 @@ public class StudentFormActivity extends AppCompatActivity {
         } else if (id == R.id.menu_register || id == R.id.menu_add_student) {
             resetForm();
             return true;
-        } else if (id == R.id.menu_clear_data) {
-            DataManager.studentList.clear();
-            Toast.makeText(this, "All Data Cleared", Toast.LENGTH_SHORT).show();
-            return true;
         } else if (id == R.id.menu_logout) {
             DataManager.studentList.clear();
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
-        } else if (id == R.id.menu_home) {
-             Intent intent = new Intent(this, MainActivity.class);
-             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-             startActivity(intent);
-             return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -1,3 +1,58 @@
 <resources>
-    <string name="app_name">exam</string>
+    <string name="app_name">Smart Portal</string>
+    
+    <!-- Modular Labels -->
+    <string name="form_title_add">Add New Record</string>
+    <string name="form_title_edit">Edit Record</string>
+    
+    <string name="label_field1">Full Name</string>
+    <string name="label_field2">ID / Registration Number</string>
+    <string name="label_field3">Phone Number</string>
+    <string name="label_field4">Email Address</string>
+    
+    <string name="label_radio">Gender / Type</string>
+    <string name="label_check">Skills / Preferences</string>
+    <string name="label_switch">Hostel Resident / Delivery Required</string>
+    <string name="label_toggle">Scholarship / Status</string>
+    <string name="label_spinner">Department / Category</string>
+    
+    <string name="label_marks">Enter Assessment Scores / Prices</string>
+    <string name="label_date">Select Date</string>
+    <string name="label_time">Select Time</string>
+
+    <string name="login_title">Login</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="login_btn">Login</string>
+    <string name="register_new_user_btn">Register New User</string>
+    
+    <string name="registration_title">Account Creation</string>
+    <string name="email_hint">Email</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="check_strength_btn">Check Password Strength</string>
+    <string name="submit_registration_btn">Submit Registration</string>
+    <string name="back_btn">Back</string>
+    <string name="password_strength_prefix">Password Strength: </string>
+    
+    <string name="add_student_title">Add New Student</string>
+    <string name="edit_student_title">Edit Student</string>
+    <string name="submit_details_btn">Submit Details</string>
+    <string name="update_details_btn">Update Details</string>
+    <string name="reset_form_btn">Reset Form</string>
+    <string name="view_students_btn">View Students</string>
+    <string name="dob_default">Date: Not Selected</string>
+    <string name="lab_time_default">Time: Not Selected</string>
+    
+    <string name="student_list_title">Data Records</string>
+    <string name="no_students_msg">No Records Found</string>
+    <string name="popup_menu_btn">Options Menu</string>
+    
+    <string name="student_details_title">Detailed View</string>
+    
+    <string name="toast_login_success">Login Successful</string>
+    <string name="toast_login_failed">Invalid Credentials</string>
+    <string name="toast_registered">Record Saved Successfully</string>
+    <string name="toast_updated">Record Updated Successfully</string>
+    <string name="toast_deleted">Record Deleted</string>
+    <string name="error_missing_fields">Please fill all required fields</string>
 </resources>

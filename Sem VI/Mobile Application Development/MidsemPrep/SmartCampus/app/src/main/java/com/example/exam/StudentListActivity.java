@@ -2,7 +2,6 @@ package com.example.exam;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,20 +21,27 @@ public class StudentListActivity extends AppCompatActivity {
     private Button btnShowPopup;
     private TextView tvEmptyState;
     private View svDataContainer;
-    private static final String TAG = "MAD_APP_LIST";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_list);
 
+        setupToolbar();
+        initViews();
+        updateUIState();
+    }
+
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Student List");
+            getSupportActionBar().setTitle(R.string.student_list_title);
         }
+    }
 
+    private void initViews() {
         lvStudents = findViewById(R.id.lvStudents);
         gvStudents = findViewById(R.id.gvStudents);
         tlStudents = findViewById(R.id.tlStudents);
@@ -43,9 +49,7 @@ public class StudentListActivity extends AppCompatActivity {
         tvEmptyState = findViewById(R.id.tvEmptyState);
         svDataContainer = findViewById(R.id.svDataContainer);
 
-        updateUIState();
-
-        btnShowPopup.setOnClickListener(v -> showPopupMenu(v));
+        btnShowPopup.setOnClickListener(this::showPopupMenu);
     }
 
     private void updateUIState() {
@@ -76,7 +80,8 @@ public class StudentListActivity extends AppCompatActivity {
                 ImageButton btnMenu = convertView.findViewById(R.id.btnItemMenu);
 
                 tvName.setText(s.getName());
-                tvSub.setText(s.getRegNo() + " | " + s.getDepartment());
+                // Modular: showing total marks
+                tvSub.setText(s.getRegNo() + " | Total: " + s.getTotalMarks());
 
                 btnMenu.setOnClickListener(v -> showItemMenu(v, position));
                 convertView.setOnClickListener(v -> openDetails(position));
@@ -85,37 +90,6 @@ public class StudentListActivity extends AppCompatActivity {
             }
         };
         lvStudents.setAdapter(listAdapter);
-    }
-
-    private void showItemMenu(View v, int position) {
-        PopupMenu popup = new PopupMenu(this, v);
-        popup.getMenu().add("View Details");
-        popup.getMenu().add("Edit");
-        popup.getMenu().add("Delete");
-        popup.setOnMenuItemClickListener(item -> {
-            String action = item.getTitle().toString();
-            if (action.equals("View Details")) {
-                openDetails(position);
-            } else if (action.equals("Edit")) {
-                // Requirement 1: Open actual edit option
-                Intent intent = new Intent(this, StudentFormActivity.class);
-                intent.putExtra("EDIT_INDEX", position);
-                startActivity(intent);
-                Toast.makeText(this, "Editing " + DataManager.studentList.get(position).getName(), Toast.LENGTH_SHORT).show();
-            } else if (action.equals("Delete")) {
-                DataManager.studentList.remove(position);
-                updateUIState();
-                Toast.makeText(this, "Deleted Student", Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        });
-        popup.show();
-    }
-
-    private void openDetails(int position) {
-        Intent intent = new Intent(this, StudentDetailsActivity.class);
-        intent.putExtra("STUDENT_INDEX", position);
-        startActivity(intent);
     }
 
     private void setupGridView() {
@@ -129,7 +103,7 @@ public class StudentListActivity extends AppCompatActivity {
                 }
                 Student s = DataManager.studentList.get(position);
                 ((TextView) convertView.findViewById(R.id.tvGridName)).setText(s.getName());
-                ((TextView) convertView.findViewById(R.id.tvGridDept)).setText(s.getDepartment());
+                ((TextView) convertView.findViewById(R.id.tvGridDept)).setText("Total: " + s.getTotalMarks());
                 
                 convertView.setOnClickListener(v -> openDetails(position));
                 return convertView;
@@ -148,9 +122,9 @@ public class StudentListActivity extends AppCompatActivity {
             
             TextView tvName = new TextView(this); tvName.setText(s.getName()); tvName.setPadding(8, 8, 8, 8);
             TextView tvDept = new TextView(this); tvDept.setText(s.getDepartment()); tvDept.setPadding(8, 8, 8, 8);
-            TextView tvGender = new TextView(this); tvGender.setText(s.getGender()); tvGender.setPadding(8, 8, 8, 8);
+            TextView tvTotal = new TextView(this); tvTotal.setText(String.valueOf(s.getTotalMarks())); tvTotal.setPadding(8, 8, 8, 8);
             
-            row.addView(tvName); row.addView(tvDept); row.addView(tvGender);
+            row.addView(tvName); row.addView(tvDept); row.addView(tvTotal);
             
             final int pos = i;
             row.setOnClickListener(v -> openDetails(pos));
@@ -158,10 +132,33 @@ public class StudentListActivity extends AppCompatActivity {
         }
     }
 
+    private void showItemMenu(View v, int position) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.getMenu().add("View Details");
+        popup.getMenu().add("Edit");
+        popup.getMenu().add("Delete");
+        popup.setOnMenuItemClickListener(item -> {
+            String action = item.getTitle().toString();
+            if (action.equals("View Details")) {
+                openDetails(position);
+            } else if (action.equals("Edit")) {
+                startActivity(new Intent(this, StudentFormActivity.class).putExtra("EDIT_INDEX", position));
+            } else if (action.equals("Delete")) {
+                DataManager.studentList.remove(position);
+                updateUIState();
+                Toast.makeText(this, R.string.toast_deleted, Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        });
+        popup.show();
+    }
+
+    private void openDetails(int position) {
+        startActivity(new Intent(this, StudentDetailsActivity.class).putExtra("STUDENT_INDEX", position));
+    }
+
     private void showPopupMenu(View v) {
         PopupMenu popup = new PopupMenu(this, v);
-        popup.getMenu().add("Change Theme");
-        popup.getMenu().add("Sort Students");
         popup.getMenu().add("Refresh");
         popup.setOnMenuItemClickListener(item -> {
             if (item.getTitle().equals("Refresh")) updateUIState();
@@ -183,25 +180,11 @@ public class StudentListActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (id == R.id.menu_register || id == R.id.menu_add_student) {
-            // Requirement 2: Fix Register option
-            Intent intent = new Intent(this, StudentFormActivity.class);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.menu_home) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            startActivity(new Intent(this, StudentFormActivity.class));
             return true;
         } else if (id == R.id.menu_logout) {
             DataManager.studentList.clear();
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.menu_clear_data) {
-            DataManager.studentList.clear();
-            updateUIState();
-            Toast.makeText(this, "Data Cleared", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             return true;
         }
         return super.onOptionsItemSelected(item);

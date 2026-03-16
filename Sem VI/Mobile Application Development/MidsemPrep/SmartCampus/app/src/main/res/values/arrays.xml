@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="departments">
+        <item>CCE</item>
+        <item>IT</item>
+        <item>CS</item>
+        <item>AI</item>
+        <item>Data Science</item>
+    </string-array>
+    
+    <string-array name="skills_array">
+        <item>Java</item>
+        <item>Python</item>
+        <item>Web Development</item>
+        <item>Machine Learning</item>
+        <item>Android</item>
+    </string-array>
+
+    <!-- Generic Assessment/Items List -->
+    <string-array name="assessments_array">
+        <item>Subject 1 / Item 1</item>
+        <item>Subject 2 / Item 2</item>
+        <item>Subject 3 / Item 3</item>
+    </string-array>
+
+    <string-array name="login_credentials">
+        <item>admin</item>
+        <item>admin</item>
+    </string-array>
+</resources>
